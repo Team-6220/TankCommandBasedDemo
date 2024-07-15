@@ -19,6 +19,7 @@ public class DriveCmd extends Command {
 
   public DriveCmd(DriveSubsystem drive, Supplier<Double> v, Supplier<Double> r) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(drive);
     driveTrain = drive;
     velocity = v;
     rotation = r;
@@ -34,10 +35,12 @@ public class DriveCmd extends Command {
     double dz = Constants.DriveConstants.deadzone;
     double v = Math.abs(velocity.get()) > dz? velocity.get(): 0;
     double r = Math.abs(rotation.get()) > dz? rotation.get(): 0;
-    SmartDashboard.putNumber("vLeft", v + r / 2);
-    SmartDashboard.putNumber("vRight", v - r / 2);
-    driveTrain.setLeft(v + r / 2);
-    driveTrain.setRight(v - r / 2);
+    double left = driveTrain.estop? 0: driveTrain.isDashing? 1: v + r / 2;
+    double right = driveTrain.estop? 0: driveTrain.isDashing? 1: v - r / 2;
+    SmartDashboard.putNumber("vLeft", left);
+    SmartDashboard.putNumber("vRight", right);
+    driveTrain.setLeft(left);
+    driveTrain.setRight(right);
   }
 
   // Called once the command ends or is interrupted.

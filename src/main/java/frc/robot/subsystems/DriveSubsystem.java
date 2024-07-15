@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -18,6 +20,9 @@ public class DriveSubsystem extends SubsystemBase {
   private TalonSRX rightMaster;
   private TalonSRX leftSlave;
   private TalonSRX rightSlave;
+
+  public volatile boolean isDashing = false;
+  public volatile boolean estop = false;
 
   public DriveSubsystem() {
     
@@ -46,5 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("e stopping", estop);
+    SmartDashboard.putBoolean("dashing", isDashing);
   }
 }

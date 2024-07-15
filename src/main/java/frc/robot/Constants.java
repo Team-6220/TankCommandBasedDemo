@@ -24,7 +24,7 @@ public final class Constants {
     public static final int rightSlaveID = 1;
     public static final double deadzone = .025;
 
-    public static final boolean rightInv = false; //TODO: confirm which should be inverted with sam
+    public static final boolean rightInv = true; //TODO: confirm which should be inverted with sam
     public static final boolean leftInv = false;
 
   }

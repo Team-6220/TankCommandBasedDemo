@@ -7,13 +7,14 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 // import frc.robot.commands.Autos;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.subsystems.DriveSubsystem;
-
+import frc.robot.commands.DashToggle;
+import frc.robot.commands.EStopToggle;
 import frc.robot.commands.DriveCmd;
 
 /**
@@ -28,15 +29,15 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final XboxController m_driverController =
+      new XboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
     new DriveCmd(driveSubsystem, () -> m_driverController.getRawAxis(1), () -> m_driverController.getRawAxis(0));
-    
+
   }
 
   /**
@@ -50,7 +51,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
+    new Trigger(() -> m_driverController.getXButtonPressed()).onTrue(new DashToggle(driveSubsystem, true));
+    new Trigger(() -> m_driverController.getXButtonReleased()).onTrue(new DashToggle(driveSubsystem, false));
+    new Trigger(() -> m_driverController.getBButtonPressed()).onTrue(new EStopToggle(driveSubsystem, true));
+    new Trigger(() -> m_driverController.getBButtonReleased()).onTrue(new EStopToggle(driveSubsystem, false));
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 

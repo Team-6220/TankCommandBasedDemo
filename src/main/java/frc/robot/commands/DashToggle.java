@@ -4,12 +4,21 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.DriveSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class DashToggle extends Command {
   /** Creates a new DashToggle. */
-  public DashToggle() {
+  private DriveSubsystem driveTrain;
+  private boolean end = false;
+
+  public DashToggle(DriveSubsystem drive, boolean toggle) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(drive);
+    driveTrain = drive;
+    driveTrain.isDashing = toggle;
+    end = true;
   }
 
   // Called when the command is initially scheduled.
@@ -27,6 +36,6 @@ public class DashToggle extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return end;
   }
 }
